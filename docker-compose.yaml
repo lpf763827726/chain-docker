@@ -1,0 +1,111 @@
+version: "3"
+
+services:
+   ethereum_goerli_test_net:
+     image: ethereum-chain:dev
+     volumes:
+       - /mnt/bigstore/ethereum_full:/app/goerli
+     environment: 
+       NET: goerli
+       SYNCMODE: full
+       HTTP_PORT: 8546
+       PORT: 30304
+       DIR: /app/goerli
+     ports:
+       - "8546:8546"
+       - "30304:30304/udp"
+       - "30305:30304/tcp"
+     networks:
+       - oftenpay-chains
+
+   bsc_test_net:
+     image: bsc-chain:dev
+     volumes:
+       - /mnt/bigstore/bsc/bsc_test_net/node:/app/testnet
+     environment: 
+       NET: testnet
+       SYNCMODE: full
+       HTTP_PORT: 11545
+       PORT: 30304
+     ports:
+       - "11545:11545"
+       - "30304:30304/udp"
+     networks:
+       - oftenpay-chains
+
+   bsc_main_net:
+     image: bsc-chain:dev
+     volumes:
+       - /mnt/bigstore/bsc/bsc_main_net/node:/app/mainnet
+     environment: 
+       NET: mainnet
+       SYNCMODE: full
+       HTTP_PORT: 11545
+       PORT: 30403
+     ports:
+       - "11645:11545"
+       - "30503:30403"
+     networks:
+       - oftenpay-chains
+
+   ethereum_rinkeby_test_net:
+     image: ethereum-chain:dev
+     volumes:
+       - /mnt/bigstore/.rinkeby:/app/rinkeby
+     environment: 
+       NET: rinkeby
+       SYNCMODE: full
+       HTTP_PORT: 8546
+       PORT: 30304
+       DIR: /app/rinkeby
+     ports:
+       - "9546:8546"
+       - "30404:30304/udp"
+       - "30305:30304/tcp"
+     networks:
+       - oftenpay-chains
+
+   arbitrum_rinkeby_test_net:
+     image: offchainlabs/arb-node:v1.2.0-9214e38
+     volumes:
+       - /mnt/bigstore/arbitrum-rinkeby:/home/user/.arbitrum/rinkeby
+     command: 
+      #  --l1.url http://192.168.2.204:9545
+      --l1.url https://rinkeby.infura.io/v3/
+     ports:
+       - "8547:8547"
+     networks:
+       - oftenpay-chains
+
+   ethereum_mainnet:
+     image: ethereum-chain:dev
+     volumes:
+       - /mnt/ssd/chains/ethereum_mainnet:/app/mainnet
+     environment:
+       NET: mainnet
+       SYNCMODE: full
+       HTTP_PORT: 8646
+       PORT: 30304
+       DIR: /app/mainnet/.ethereum_full
+     ports:
+       - "8646:8646"
+       - "30305:30304/udp"
+       - "30305:30304/tcp"
+     networks:
+       - oftenpay-chains
+
+   arbitrum_ethereum_mainnet:
+     image: offchainlabs/arb-node:v1.2.0-9214e38
+     volumes:
+       - /mnt/ssd/chains/arbitrum_ethereum_mainnet:/home/user/.arbitrum/mainnet
+     command:
+       --l1.url http://192.168.2.226:8646
+     ports:
+       - "8647:8547"
+       - "8648:8548"
+     networks:
+       - oftenpay-chains
+
+networks:
+  oftenpay-chains:
+    driver: bridge
