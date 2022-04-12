@@ -1,4 +1,4 @@
-# oftenpay-chains
+# chains-docker
 
 arbitrum: Note on permissions
 ```
